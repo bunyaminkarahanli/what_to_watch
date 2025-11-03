@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:what_to_watch/auth/signup/view/signup_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         // renk düzeni
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF3F51B5),
-          primary: const Color(0xFF3F51B5), // senin mor-mavi tonun
+          primary: const Color(0xFF3F51B5),
         ),
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFF8F9FF),
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      home: SignupView(),
     );
   }
 }
