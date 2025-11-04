@@ -4,6 +4,7 @@ import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
 import 'package:what_to_watch/auth/signup/view/signup_view.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
+import 'package:what_to_watch/screens/profile/view/profile_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -69,7 +70,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: BottomBarView(),
+      home: ProfileView(),
     );
   }
 }
