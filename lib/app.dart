@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:what_to_watch/auth/signin/view/signin_view.dart';
 import 'package:what_to_watch/auth/signup/view/signup_view.dart';
 
 class MyApp extends StatelessWidget {
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SignupView(),
+      home: SigninView(),
     );
   }
 }

@@ -1,0 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
+
+class SigninView extends StatefulWidget {
+  const SigninView({super.key});
+
+  @override
+  State<SigninView> createState() => _SigninViewState();
+}
+
+class _SigninViewState extends State<SigninView> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                Image.asset('assets/images/onboar1.png', height: 200),
+                const SizedBox(height: 40),
+                Text('Giriş yap', style: theme.textTheme.headlineLarge),
+                const SizedBox(height: 12),
+                Text(
+                  'İçerikleri keşfetmeye başla.',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 40),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      mailBuild(),
+                      const SizedBox(height: 20),
+                      passwordBuild(),
+                      const SizedBox(height: 32),
+                      signinButtonBuild(),
+                      const SizedBox(height: 16),
+                      forgotPasswordBuild(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextButton forgotPasswordBuild() {
+    return TextButton(
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ForgotPasswordView()),
+      ),
+      child: const Text('Şifremi Unuttum'),
+    );
+  }
+
+  ElevatedButton signinButtonBuild() {
+    return ElevatedButton(onPressed: () {}, child: const Text('Giriş Yap'));
+  }
+
+  TextFormField passwordBuild() {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: _obscureText,
+      decoration: InputDecoration(
+        labelText: 'Şifre',
+        prefixIcon: const Icon(Icons.lock_outline),
+        suffixIcon: IconButton(
+          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen şifrenizi girin';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField mailBuild() {
+    return TextFormField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        labelText: 'E-posta',
+        prefixIcon: const Icon(Icons.email_outlined),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen e-posta adresinizi girin';
+        }
+        return null;
+      },
+    );
+  }
+}

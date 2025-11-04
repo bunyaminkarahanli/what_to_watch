@@ -41,112 +41,15 @@ class _SignupViewState extends State<SignupView> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      keyboardType: TextInputType.name,
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person_outline),
-                        labelText: 'Ad Soyad',
-                        hintText: 'Ad Soyad',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Lütfen adınızı girin';
-                        }
-                        return null;
-                      },
-                    ),
+                    nameBuild(),
                     SizedBox(height: 16),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.mail),
-                        labelText: 'E-posta',
-                        hintText: 'E-posta',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Lütfen e-posta adresinizi girin';
-                        }
-                        return null;
-                      },
-                    ),
+                    mailBuild(),
                     SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () =>
-                              setState(() => _obscureText = !_obscureText),
-                        ),
-                        labelText: 'Şifre',
-                        hintText: 'Şifre',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Lütfen bir şifre oluşturun';
-                        } else if (value.length < 6) {
-                          return 'Şifre en az 6 karakter olmalı';
-                        }
-                        return null;
-                      },
-                    ),
+                    passwordBuild(),
                     SizedBox(height: 16),
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () =>
-                              setState(() => _obscureText = !_obscureText),
-                        ),
-                        labelText: 'Şifre Tekrar',
-                        hintText: 'Şifre Tekrar',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Lütfen bir şifre oluşturun';
-                        } else if (value != _passwordController.text) {
-                          return 'Şifreler eşleşmiyor';
-                        }
-                        return null;
-                      },
-                    ),
+                    confirmPasswordBuild(),
                     SizedBox(height: 32),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          print('okeyy');
-                        }
-                      },
-                      child: Text('Kayıt Ol'),
-                    ),
+                    signupButtonBuild(),
                   ],
                 ),
               ),
@@ -154,6 +57,105 @@ class _SignupViewState extends State<SignupView> {
           ),
         ),
       ),
+    );
+  }
+
+  ElevatedButton signupButtonBuild() {
+    return ElevatedButton(
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {
+          print('okeyy');
+        }
+      },
+      child: Text('Kayıt Ol'),
+    );
+  }
+
+  TextFormField confirmPasswordBuild() {
+    return TextFormField(
+      controller: _confirmPasswordController,
+      obscureText: _obscureText,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.lock_outline),
+        suffixIcon: IconButton(
+          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+          onPressed: () => setState(() => _obscureText = !_obscureText),
+        ),
+        labelText: 'Şifre Tekrar',
+        hintText: 'Şifre Tekrar',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen bir şifre oluşturun';
+        } else if (value != _passwordController.text) {
+          return 'Şifreler eşleşmiyor';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField passwordBuild() {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: _obscureText,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.lock_outline),
+        suffixIcon: IconButton(
+          icon: Icon(_obscureText ? Icons.visibility_off : Icons.visibility),
+          onPressed: () => setState(() => _obscureText = !_obscureText),
+        ),
+        labelText: 'Şifre',
+        hintText: 'Şifre',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen bir şifre oluşturun';
+        } else if (value.length < 6) {
+          return 'Şifre en az 6 karakter olmalı';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField mailBuild() {
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      controller: _emailController,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.mail),
+        labelText: 'E-posta',
+        hintText: 'E-posta',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen e-posta adresinizi girin';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField nameBuild() {
+    return TextFormField(
+      keyboardType: TextInputType.name,
+      controller: _nameController,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.person_outline),
+        labelText: 'Ad Soyad',
+        hintText: 'Ad Soyad',
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen adınızı girin';
+        }
+        return null;
+      },
     );
   }
 }
