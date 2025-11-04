@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
 import 'package:what_to_watch/auth/signup/view/signup_view.dart';
+import 'package:what_to_watch/home/bottom_bar_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: ForgotPasswordView(),
+      home: BottomBarView(),
     );
   }
 }

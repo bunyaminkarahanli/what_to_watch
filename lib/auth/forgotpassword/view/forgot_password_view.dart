@@ -35,42 +35,54 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               const SizedBox(height: 40),
               Form(
                 key: _formKey,
-                child: TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'E-posta',
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Lütfen e-posta adresinizi girin';
-                    } else if (!value.contains('@')) {
-                      return 'Geçerli bir e-posta girin';
-                    }
-                    return null;
-                  },
-                ),
+                child: mailBuild(),
               ),
               const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
-                },
-                child: const Text("Sıfırlama Maili Gönder"),
-              ),
+              sendButtonBuild(),
               const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Geri Dön"),
-              ),
+              comeBackButtonBuild(context),
             ],
           ),
         ),
       ),
     );
+  }
+
+  TextButton comeBackButtonBuild(BuildContext context) {
+    return TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Geri Dön"),
+            );
+  }
+
+  ElevatedButton sendButtonBuild() {
+    return ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {}
+              },
+              child: const Text("Sıfırlama Maili Gönder"),
+            );
+  }
+
+  TextFormField mailBuild() {
+    return TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'E-posta',
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Lütfen e-posta adresinizi girin';
+                  } else if (!value.contains('@')) {
+                    return 'Geçerli bir e-posta girin';
+                  }
+                  return null;
+                },
+              );
   }
 }
