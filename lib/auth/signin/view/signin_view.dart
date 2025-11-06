@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
+import 'package:what_to_watch/auth/signin/services/signin_service.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -12,6 +13,7 @@ class _SigninViewState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final SigninService _signinService = SigninService();
   bool _obscureText = true;
 
   @override
@@ -68,7 +70,40 @@ class _SigninViewState extends State<SigninView> {
   }
 
   ElevatedButton signinButtonBuild() {
-    return ElevatedButton(onPressed: () {}, child: const Text('Giriş Yap'));
+    return ElevatedButton(
+      onPressed: () async {
+        if (_formKey.currentState!.validate()) {
+          try {
+            // Firebase ile kullanıcı girişi yap
+            await _signinService.signInWithEmail(
+              email: _emailController.text,
+              password: _passwordController.text,
+            );
+
+            // Başarılı durumda kullanıcıya bilgi ver
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Giriş başarılı! Hoş geldiniz.'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+          } catch (e) {
+            // Hata durumunda kullanıcıya hata mesajını göster
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.toString()),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          }
+        }
+      },
+      child: const Text('Giriş Yap'),
+    );
   }
 
   TextFormField passwordBuild() {

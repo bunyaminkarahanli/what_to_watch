@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_watch/auth/signup/services/signup_service.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -14,6 +15,7 @@ class _SignupViewState extends State<SignupView> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final SignupService _signupService = SignupService();
 
   bool _obscureText = true;
   @override
@@ -62,12 +64,39 @@ class _SignupViewState extends State<SignupView> {
 
   ElevatedButton signupButtonBuild() {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          print('okeyy');
+          try {
+            // Firebase ile kullanıcı kaydı oluştur
+            await _signupService.signUpWithEmail(
+              email: _emailController.text,
+              password: _passwordController.text,
+              name: _nameController.text,
+            );
+
+            // Başarılı durumda kullanıcıya bilgi ver
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Kayıt başarılı! Hoş geldiniz.'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+          } catch (e) {
+            // Hata durumunda kullanıcıya hata mesajını göster
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.toString()),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          }
         }
       },
-      child: Text('Kayıt Ol'),
+      child: const Text('Kayıt Ol'),
     );
   }
 

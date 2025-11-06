@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "731971805603",
+    "project_id": "whattowatch-22ec4",
+    "storage_bucket": "whattowatch-22ec4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731971805603:android:efe7e2f98a5b93043bfa16",
+        "android_client_info": {
+          "package_name": "com.example.what_to_watch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Sfdj6dQA9ql_rhBxp4-0r1o7xmqhE_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
