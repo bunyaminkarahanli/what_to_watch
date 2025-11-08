@@ -41,48 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCb9SqwSfxY8n3qpgG4rimUSx6ebK1kt0s',
-    appId: '1:731971805603:web:65b85bb55d5eb72f3bfa16',
-    messagingSenderId: '731971805603',
-    projectId: 'whattowatch-22ec4',
-    authDomain: 'whattowatch-22ec4.firebaseapp.com',
-    storageBucket: 'whattowatch-22ec4.firebasestorage.app',
-    measurementId: 'G-QJZXPV2Q93',
+    apiKey: 'AIzaSyBFp7sz2FZ3WEn_16bv0eYE4tUmyDPLhMI',
+    appId: '1:44741937465:web:3b2df99d2d1e50a439c0e8',
+    messagingSenderId: '44741937465',
+    projectId: 'what-to-watch-1e75a',
+    authDomain: 'what-to-watch-1e75a.firebaseapp.com',
+    storageBucket: 'what-to-watch-1e75a.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA8Sfdj6dQA9ql_rhBxp4-0r1o7xmqhE_o',
-    appId: '1:731971805603:android:efe7e2f98a5b93043bfa16',
-    messagingSenderId: '731971805603',
-    projectId: 'whattowatch-22ec4',
-    storageBucket: 'whattowatch-22ec4.firebasestorage.app',
+    apiKey: 'AIzaSyDtqbPwr9dmzL6V-73WFKg7aQ1kHvZhfVM',
+    appId: '1:44741937465:android:433390149da1724339c0e8',
+    messagingSenderId: '44741937465',
+    projectId: 'what-to-watch-1e75a',
+    storageBucket: 'what-to-watch-1e75a.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAz7zpfkEsu5Jcc6f94D1J4yE1P-dse9KY',
-    appId: '1:731971805603:ios:efa2d27df821f5b63bfa16',
-    messagingSenderId: '731971805603',
-    projectId: 'whattowatch-22ec4',
-    storageBucket: 'whattowatch-22ec4.firebasestorage.app',
+    apiKey: 'AIzaSyB-NJ8dnGrRc44QZY4PEOu_PFdEq6vd7GI',
+    appId: '1:44741937465:ios:7ac7eee1fb8d631e39c0e8',
+    messagingSenderId: '44741937465',
+    projectId: 'what-to-watch-1e75a',
+    storageBucket: 'what-to-watch-1e75a.firebasestorage.app',
     iosBundleId: 'com.example.whatToWatch',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAz7zpfkEsu5Jcc6f94D1J4yE1P-dse9KY',
-    appId: '1:731971805603:ios:efa2d27df821f5b63bfa16',
-    messagingSenderId: '731971805603',
-    projectId: 'whattowatch-22ec4',
-    storageBucket: 'whattowatch-22ec4.firebasestorage.app',
+    apiKey: 'AIzaSyB-NJ8dnGrRc44QZY4PEOu_PFdEq6vd7GI',
+    appId: '1:44741937465:ios:7ac7eee1fb8d631e39c0e8',
+    messagingSenderId: '44741937465',
+    projectId: 'what-to-watch-1e75a',
+    storageBucket: 'what-to-watch-1e75a.firebasestorage.app',
     iosBundleId: 'com.example.whatToWatch',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCb9SqwSfxY8n3qpgG4rimUSx6ebK1kt0s',
-    appId: '1:731971805603:web:dafddf536975e82b3bfa16',
-    messagingSenderId: '731971805603',
-    projectId: 'whattowatch-22ec4',
-    authDomain: 'whattowatch-22ec4.firebaseapp.com',
-    storageBucket: 'whattowatch-22ec4.firebasestorage.app',
-    measurementId: 'G-VED4WBPSNH',
+    apiKey: 'AIzaSyBFp7sz2FZ3WEn_16bv0eYE4tUmyDPLhMI',
+    appId: '1:44741937465:web:b61cb2d2c4defbc139c0e8',
+    messagingSenderId: '44741937465',
+    projectId: 'what-to-watch-1e75a',
+    authDomain: 'what-to-watch-1e75a.firebaseapp.com',
+    storageBucket: 'what-to-watch-1e75a.firebasestorage.app',
   );
+
 }

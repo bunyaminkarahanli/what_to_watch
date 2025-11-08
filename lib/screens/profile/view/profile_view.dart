@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_watch/auth/signin/view/signin_view.dart';
+import 'package:what_to_watch/auth/signout/services/signout_service.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -8,6 +10,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final SignoutService _auth = SignoutService();
   @override
   Widget build(BuildContext context) {
     //final user = authService.firebaseAuth.currentUser;
@@ -37,20 +40,65 @@ class _ProfileViewState extends State<ProfileView> {
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
-            const Divider(),
-            ListTile(),
-            ListTile(),
-            ListTile(),
-            ListTile(),
+            const Divider(thickness: 1),
+            const SizedBox(height: 24),
+            _profileItem(Icons.person, 'Hesap Bilgileri', () {}),
+            const SizedBox(height: 30),
+            signOutButtonBuild(),
+          ],
+        ),
+      ),
+    );
+  }
 
-            ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.logout),
-              label: const Text('Çıkış Yap'),
-              style: ElevatedButton.styleFrom(
+  ElevatedButton signOutButtonBuild() {
+    return ElevatedButton.icon(
+      onPressed: () async {
+        try {
+          await _auth.signOut();
+
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Başarıyla çıkış yapıldı.'),
+                backgroundColor: Colors.green,
+              ),
+            );
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const SigninView()),
+              (route) => false,
+            );
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
                 backgroundColor: Colors.redAccent,
               ),
-            ),
+            );
+          }
+        }
+      },
+      icon: const Icon(Icons.logout),
+      label: const Text('Çıkış Yap'),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+    );
+  }
+
+  _profileItem(IconData icon, String text, VoidCallback onTap) {
+    final theme = Theme.of(context);
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            Icon(icon, size: 28, color: theme.colorScheme.primary),
+            const SizedBox(width: 16),
+            Text(text, style: theme.textTheme.bodyLarge),
           ],
         ),
       ),

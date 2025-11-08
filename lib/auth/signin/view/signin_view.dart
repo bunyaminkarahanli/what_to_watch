@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
 import 'package:what_to_watch/auth/signin/services/signin_service.dart';
+import 'package:what_to_watch/home/bottom_bar_view.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -87,6 +88,11 @@ class _SigninViewState extends State<SigninView> {
                   content: Text('Giriş başarılı! Hoş geldiniz.'),
                   backgroundColor: Colors.green,
                 ),
+              );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const BottomBarView()),
+                (route) => false,
               );
             }
           } catch (e) {

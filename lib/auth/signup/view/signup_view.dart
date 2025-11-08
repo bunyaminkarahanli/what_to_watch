@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/auth/signup/services/signup_service.dart';
+import 'package:what_to_watch/home/bottom_bar_view.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -81,6 +82,11 @@ class _SignupViewState extends State<SignupView> {
                   content: Text('Kayıt başarılı! Hoş geldiniz.'),
                   backgroundColor: Colors.green,
                 ),
+              );
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const BottomBarView()),
+                (route) => false,
               );
             }
           } catch (e) {
