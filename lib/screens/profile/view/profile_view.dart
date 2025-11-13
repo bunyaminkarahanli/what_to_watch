@@ -46,7 +46,6 @@ class _ProfileViewState extends State<ProfileView> {
             const SizedBox(height: 24),
             const Divider(thickness: 1),
             const SizedBox(height: 24),
-            _profileItem(Icons.person, 'Hesap Bilgileri', () {}),
             _switchProfileItem(themeProvider),
             const SizedBox(height: 30),
             signOutButtonBuild(),
@@ -98,23 +97,6 @@ class _ProfileViewState extends State<ProfileView> {
       icon: const Icon(Icons.logout),
       label: const Text('Çıkış Yap'),
       style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
-    );
-  }
-
-  _profileItem(IconData icon, String text, VoidCallback onTap) {
-    final theme = Theme.of(context);
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
-          children: [
-            Icon(icon, size: 28, color: theme.colorScheme.primary),
-            const SizedBox(width: 16),
-            Text(text, style: theme.textTheme.bodyLarge),
-          ],
-        ),
-      ),
     );
   }
 }

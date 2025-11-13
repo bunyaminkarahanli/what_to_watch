@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:what_to_watch/providers/theme_provider.dart';
+import 'package:what_to_watch/screens/discover/view/discover_view.dart';
 import 'package:what_to_watch/screens/profile/view/profile_view.dart';
 
 class MyApp extends StatelessWidget {
@@ -119,7 +120,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
 
-      home: const ProfileView(),
+      home: const DiscoverView(),
     );
   }
 }
