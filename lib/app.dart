@@ -3,12 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
+import 'package:what_to_watch/home/bottom_bar_view.dart';
 import 'package:what_to_watch/providers/theme_provider.dart';
 import 'package:what_to_watch/screens/discover/view/discover_view.dart';
 import 'package:what_to_watch/screens/profile/view/profile_view.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+  const MyApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +124,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
 
-      home: const SigninView(),
+      home: isLoggedIn ? const BottomBarView() : const SigninView(),
     );
   }
 }

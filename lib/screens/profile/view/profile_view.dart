@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:what_to_watch/auth/local/auth_local_service.dart';
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
 import 'package:what_to_watch/auth/signout/services/signout_service.dart';
 import 'package:what_to_watch/providers/theme_provider.dart';
@@ -68,6 +69,7 @@ class _ProfileViewState extends State<ProfileView> {
       onPressed: () async {
         try {
           await _auth.signOut();
+          await AuthLocalService().logout();
 
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(

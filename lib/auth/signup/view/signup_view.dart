@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_watch/auth/local/auth_local_service.dart';
 import 'package:what_to_watch/auth/signup/services/signup_service.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
 
@@ -74,7 +75,7 @@ class _SignupViewState extends State<SignupView> {
               password: _passwordController.text,
               name: _nameController.text,
             );
-
+            await AuthLocalService().saveLogin(_emailController.text.trim());
             // Başarılı durumda kullanıcıya bilgi ver
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(

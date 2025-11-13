@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
+import 'package:what_to_watch/auth/local/auth_local_service.dart';
 import 'package:what_to_watch/auth/signin/services/signin_service.dart';
+import 'package:what_to_watch/auth/signup/view/signup_view.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
 
 class SigninView extends StatefulWidget {
@@ -48,7 +50,10 @@ class _SigninViewState extends State<SigninView> {
                       const SizedBox(height: 32),
                       signinButtonBuild(),
                       const SizedBox(height: 16),
-                      forgotPasswordBuild(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [forgotPasswordBuild(), SignupButtonBuild()],
+                      ),
                     ],
                   ),
                 ),
@@ -57,6 +62,16 @@ class _SigninViewState extends State<SigninView> {
           ),
         ),
       ),
+    );
+  }
+
+  TextButton SignupButtonBuild() {
+    return TextButton(
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SignupView()),
+      ),
+      child: const Text('Kayıt Ol'),
     );
   }
 
@@ -78,8 +93,9 @@ class _SigninViewState extends State<SigninView> {
             // Firebase ile kullanıcı girişi yap
             await _signinService.signInWithEmail(
               email: _emailController.text,
-              password: _passwordController.text,
+              password: _passwordController.text.trim(),
             );
+            await AuthLocalService().saveLogin(_emailController.text.trim());
 
             // Başarılı durumda kullanıcıya bilgi ver
             if (mounted) {
