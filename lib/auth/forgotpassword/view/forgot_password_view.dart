@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_watch/auth/forgotpassword/services/forgot_password_service.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
@@ -10,6 +11,8 @@ class ForgotPasswordView extends StatefulWidget {
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  final ForgotPasswordService _forgotService = ForgotPasswordService();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +36,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(height: 40),
-              Form(
-                key: _formKey,
-                child: mailBuild(),
-              ),
+              Form(key: _formKey, child: mailBuild()),
               const SizedBox(height: 32),
               sendButtonBuild(),
               const SizedBox(height: 16),
@@ -50,39 +50,74 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   TextButton comeBackButtonBuild(BuildContext context) {
     return TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Geri Dön"),
-            );
+      onPressed: () => Navigator.pop(context),
+      child: const Text("Geri Dön"),
+    );
   }
 
   ElevatedButton sendButtonBuild() {
     return ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {}
-              },
-              child: const Text("Sıfırlama Maili Gönder"),
-            );
+      onPressed: _isLoading
+          ? null
+          : () async {
+              if (_formKey.currentState!.validate()) {
+                setState(() => _isLoading = true);
+
+                try {
+                  await _forgotService.sendPasswordResetEmail(
+                    email: _emailController.text,
+                  );
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Şifre sıfırlama e-postası gönderildi. Lütfen e-postanızı kontrol edin.',
+                        ),
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(e.toString())));
+                  }
+                } finally {
+                  if (mounted) {
+                    setState(() => _isLoading = false);
+                  }
+                }
+              }
+            },
+
+      child: _isLoading
+          ? const SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : const Text("Sıfırlama Maili Gönder"),
+    );
   }
 
   TextFormField mailBuild() {
     return TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'E-posta',
-                  prefixIcon: const Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Lütfen e-posta adresinizi girin';
-                  } else if (!value.contains('@')) {
-                    return 'Geçerli bir e-posta girin';
-                  }
-                  return null;
-                },
-              );
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+        labelText: 'E-posta',
+        prefixIcon: const Icon(Icons.email_outlined),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Lütfen e-posta adresinizi girin';
+        } else if (!value.contains('@')) {
+          return 'Geçerli bir e-posta girin';
+        }
+        return null;
+      },
+    );
   }
 }
