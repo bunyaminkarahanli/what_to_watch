@@ -1,0 +1,89 @@
+{
+  "title": "YouTube Channel Finder",
+  "questions": [
+    {
+      "id": "category",
+      "type": "select",
+      "label": "Kanal türü",
+      "options": [
+        "Teknoloji",
+        "Eğitim",
+        "Oyun",
+        "Vlog / Gezi",
+        "Müzik",
+        "Kişisel Gelişim",
+        "Komedi",
+        "Yemek",
+        "Diğer"
+      ],
+      "required": true
+    },
+    {
+      "id": "language",
+      "type": "select",
+      "label": "Kanal dili",
+      "options": [
+        "Türkçe",
+        "İngilizce",
+        "Japonca",
+        "Korece",
+        "Diğer",
+        "Farketmez"
+      ],
+      "required": true
+    },
+    {
+      "id": "popularity",
+      "type": "select",
+      "label": "Popülerlik aralığı",
+      "options": ["100K altı", "100K - 1M", "1M üstü", "Farketmez"],
+      "required": true
+    },
+    {
+      "id": "content_style",
+      "type": "select",
+      "label": "İçerik stili",
+      "options": [
+        "Eğlenceli",
+        "Bilgilendirici",
+        "Hikâye anlatımı",
+        "Motivasyonel",
+        "Analiz / yorum",
+        "Deneyim paylaşımı",
+        "Farketmez"
+      ],
+      "required": true
+    },
+    {
+      "id": "content_depth",
+      "type": "select",
+      "label": "İçerik yoğunluğu",
+      "options": [
+        "Basit ve hızlı anlatım",
+        "Orta detay",
+        "Çok detaylı derin içerik",
+        "Farketmez"
+      ],
+      "required": true
+    },
+    {
+      "id": "video_length",
+      "type": "select",
+      "label": "Video uzunluğu",
+      "options": [
+        "1–5 dakika",
+        "5–15 dakika",
+        "15–30 dakika",
+        "30 dakika üzeri",
+        "Karışık / Farketmez"
+      ],
+      "required": true
+    },
+    {
+      "id": "channel_description",
+      "type": "text",
+      "label": "Kanalı tarif et (opsiyonel)",
+      "placeholder": "örn: sade anlatım, eğlenceli, hızlı içerik, detaylı anlatım..."
+    }
+  ]
+}

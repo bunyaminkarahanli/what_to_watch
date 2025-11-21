@@ -35,6 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   google_fonts: ^6.3.2
   cupertino_icons: ^1.0.8
+  flutter_dotenv: ^5.2.1
+  url_launcher: ^6.2.5
+  http: ^1.2.0
   provider: ^6.1.5+1
   shared_preferences: ^2.5.3
 
@@ -67,6 +70,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/questions/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
