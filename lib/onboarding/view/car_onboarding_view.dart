@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:what_to_watch/home/bottom_bar_view.dart';
+import 'package:what_to_watch/onboarding/service/onboarding_service.dart';
 
 class CarOnboardingView extends StatelessWidget {
   const CarOnboardingView({super.key});
 
-  void _onGoogleContinue(BuildContext context) {
-    // TODO: Buraya Google ile giriş akışını ekle
-    // İşlem başarılı olunca:
-    // _goToApp(context);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final OnboardingService _onboardingService = OnboardingService();
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Column(
             children: [
-              // Orta kısım: ikon + başlık + açıklama (sadece 1. sayfa içeriği)
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -61,22 +59,37 @@ class CarOnboardingView extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => _onGoogleContinue(context),
+                  onPressed: () async {
+                    bool success = await _onboardingService.onGoogleContinue();
+
+                    if (success) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const BottomBarView(),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Google ile giriş başarısız!"),
+                        ),
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    backgroundColor: const Color(
-                      0xFF3F51B5,
-                    ), // Google butonları genelde beyaz olur
+                    backgroundColor: const Color(0xFF3F51B5),
                     foregroundColor: Colors.white,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/icons/google.png", // ikon dosyan
+                        "assets/icons/google.png",
                         height: 22,
                         width: 22,
                       ),
@@ -121,3 +134,36 @@ class CarOnboardingView extends StatelessWidget {
     );
   }
 }
+
+// Future<void> _onGoogleContinue(BuildContext context) async {
+//   try {
+//     // 1. Google hesabını seç
+//     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+//     if (gUser == null) {
+//       // Kullanıcı iptal etti
+//       return;
+//     }
+
+//     // 2. Google auth bilgilerini al
+//     final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+//     // 3. Firebase credential oluştur
+//     final credential = GoogleAuthProvider.credential(
+//       accessToken: gAuth.accessToken,
+//       idToken: gAuth.idToken,
+//     );
+
+//     // 4. Firebase ile giriş yap
+//     await FirebaseAuth.instance.signInWithCredential(credential);
+
+//     // 5. Başarılı → uygulamaya geç
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (_) => const BottomBarView()),
+//     );
+//   } catch (e) {
+//     ScaffoldMessenger.of(
+//       context,
+//     ).showSnackBar(SnackBar(content: Text('Google ile giriş hatası: $e')));
+//   }
+// }

@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
-import 'package:what_to_watch/onboarding/car_onboarding_view.dart';
+import 'package:what_to_watch/onboarding/view/car_onboarding_view.dart';
 import 'package:what_to_watch/providers/theme_provider.dart';
 
 class MyApp extends StatelessWidget {
