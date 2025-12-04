@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/screens/discover/view/discover_view.dart';
 import 'package:what_to_watch/screens/profile/view/profile_view.dart';
-import 'package:what_to_watch/screens/saved/view/saved_view.dart';
+import 'package:what_to_watch/screens/favorite/view/car_favorite_view.dart';
 
 class BottomBarView extends StatefulWidget {
   const BottomBarView({super.key});
@@ -15,7 +15,7 @@ class _BottomBarViewState extends State<BottomBarView> {
 
   final List<Widget> _pages = const [
     DiscoverView(),
-    SavedView(),
+    CarFavoriteView(),
     ProfileView(),
   ];
 
@@ -32,7 +32,10 @@ class _BottomBarViewState extends State<BottomBarView> {
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Keşfet'),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Kaydet'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Favoriler',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
       ),

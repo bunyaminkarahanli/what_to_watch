@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:what_to_watch/screens/car/view/car_view.dart';
 import 'package:what_to_watch/screens/kick/view/kick_view.dart';
-import 'package:what_to_watch/screens/youtube/view/youtube_view.dart';
+
 import 'package:what_to_watch/widgets/discover_card.dart';
 
 class DiscoverView extends StatefulWidget {
@@ -12,14 +13,10 @@ class DiscoverView extends StatefulWidget {
 
 class _DiscoverViewState extends State<DiscoverView> {
   final List<Map<String, dynamic>> items = [
+    {"title": "Araba", "image": 'assets/images/car.png', "color": Colors.blue},
     {
-      "title": "Youtube",
-      "image": 'assets/images/youtube.png',
-      "color": Colors.blue,
-    },
-    {
-      "title": "Kick",
-      "image": 'assets/images/gamer.png',
+      "title": "Motosiklet",
+      "image": 'assets/images/motorcycle.png',
       "color": Colors.orange,
     },
   ];
@@ -44,17 +41,17 @@ class _DiscoverViewState extends State<DiscoverView> {
               title: item["title"],
               imageUrl: item["image"],
               onTap: () {
-                if (item["title"] == "Youtube") {
+                if (item["title"] == "Araba") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CarView()),
+                  );
+                } else if (item["title"] == "Motosiklet") {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const YoutubeView(),
+                      builder: (context) => const MotorcycleView(),
                     ),
-                  );
-                } else if (item["title"] == "Kick") {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const KickView()),
                   );
                 }
               },

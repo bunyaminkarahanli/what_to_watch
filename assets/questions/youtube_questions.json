@@ -1,89 +1,105 @@
 {
-  "title": "YouTube Channel Finder",
+  "title": "Hangi Araba?",
   "questions": [
     {
-      "id": "category",
+      "id": "usage",
       "type": "select",
-      "label": "Kanal türü",
+      "label": "Aracı çoğunlukla nerede kullanacaksın?",
       "options": [
-        "Teknoloji",
-        "Eğitim",
-        "Oyun",
-        "Vlog / Gezi",
-        "Müzik",
-        "Kişisel Gelişim",
-        "Komedi",
-        "Yemek",
-        "Diğer"
+        "Şehir içi",
+        "Uzun yol ağırlıklı",
+        "Karışık şehir içi + uzun yol",
+        "Arazi / Off-Road"
       ],
       "required": true
     },
     {
-      "id": "language",
+      "id": "family_size",
       "type": "select",
-      "label": "Kanal dili",
+      "label": "Aile büyüklüğü",
+      "options": ["Tek kişi", "2 kişi", "3–4 kişi", "5+ kişi"],
+      "required": true
+    },
+    {
+      "id": "driving_experience",
+      "type": "select",
+      "label": "Sürüş tecrüben nasıl?",
       "options": [
-        "Türkçe",
-        "İngilizce",
-        "Japonca",
-        "Korece",
-        "Diğer",
+        "Yeni ehliyet aldım / çok tecrübem yok",
+        "Orta seviye (3–5 yıl)",
+        "Tecrübeli (5+ yıl)"
+      ],
+      "required": true
+    },
+
+    {
+      "id": "fuel_type",
+      "type": "select",
+      "label": "Yakıt tercihin",
+      "options": ["Benzin", "Dizel", "Hybrid", "Elektrik", "Farketmez"],
+      "required": true
+    },
+    {
+      "id": "gearbox",
+      "type": "select",
+      "label": "Vites tercihin",
+      "options": ["Otomatik", "Manuel", "Farketmez"],
+      "required": true
+    },
+    {
+      "id": "body_type",
+      "type": "select",
+      "label": "Araç tipi",
+      "options": [
+        "Sedan",
+        "Hatchback",
+        "SUV",
+        "Crossover",
+        "Station Wagon",
         "Farketmez"
       ],
       "required": true
     },
     {
-      "id": "popularity",
+      "id": "new_or_used",
       "type": "select",
-      "label": "Popülerlik aralığı",
-      "options": ["100K altı", "100K - 1M", "1M üstü", "Farketmez"],
+      "label": "Sıfır mı, ikinci el mi düşünüyorsun?",
+      "options": ["Sadece sıfır", "Sadece ikinci el", "Farketmez"],
       "required": true
     },
+
     {
-      "id": "content_style",
+      "id": "priority",
       "type": "select",
-      "label": "İçerik stili",
+      "label": "Senin için en önemli şey ne?",
       "options": [
-        "Eğlenceli",
-        "Bilgilendirici",
-        "Hikâye anlatımı",
-        "Motivasyonel",
-        "Analiz / yorum",
-        "Deneyim paylaşımı",
-        "Farketmez"
+        "Yakıt tüketimi",
+        "Performans",
+        "Konfor",
+        "Güvenlik",
+        "Fiyat / Performans",
+        "Bagaj hacmi",
+        "Donanım özellikleri",
+        "Düşük bakım maliyeti"
       ],
       "required": true
     },
     {
-      "id": "content_depth",
+      "id": "tech_level",
       "type": "select",
-      "label": "İçerik yoğunluğu",
+      "label": "Teknoloji ve donanım beklentin nasıl?",
       "options": [
-        "Basit ve hızlı anlatım",
-        "Orta detay",
-        "Çok detaylı derin içerik",
-        "Farketmez"
+        "Temel özellikler yeter (ABS, klima vs.)",
+        "Orta seviye (hız sabitleyici, park sensörü vs.)",
+        "Yüksek seviye (şerit takip, adaptif hız sabitleyici vs.)"
       ],
       "required": true
     },
     {
-      "id": "video_length",
-      "type": "select",
-      "label": "Video uzunluğu",
-      "options": [
-        "1–5 dakika",
-        "5–15 dakika",
-        "15–30 dakika",
-        "30 dakika üzeri",
-        "Karışık / Farketmez"
-      ],
-      "required": true
-    },
-    {
-      "id": "channel_description",
+      "id": "extra_desc",
       "type": "text",
-      "label": "Kanalı tarif et (opsiyonel)",
-      "placeholder": "örn: sade anlatım, eğlenceli, hızlı içerik, detaylı anlatım..."
+      "label": "Ek not (opsiyonel)",
+      "placeholder": "Örn: Sessiz olsun, vergisi düşük olsun, şu marka/model hoşuma gidiyor, yüksek olmasın..."
     }
   ]
 }

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:what_to_watch/screens/youtube/models/question_model.dart';
+import 'package:what_to_watch/screens/car/models/question_model.dart';
 
-class YoutubeQuestionRepo {
+class CarQuestionRepo {
   static Future<List<QuestionModel>> loadQuestions() async {
     final jsonString = await rootBundle.loadString(
       'assets/questions/youtube_questions.json',

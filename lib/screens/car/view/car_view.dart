@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Sonuç ekranını import ediyoruz
-import 'package:what_to_watch/screens/youtube/view/result_youtube_view.dart';
+import 'package:what_to_watch/screens/car/view/result_car_view.dart';
 
 // Soru modelimizi import ediyoruz
 import '../models/question_model.dart';
@@ -11,25 +11,25 @@ import '../models/question_model.dart';
 import '../services/question_service.dart';
 
 /// --------------------------------------------------------------
-/// YOUTUBE VIEW EKRANI
+/// ARABA SORU EKRANI
 /// Bu ekran:
 /// 1) JSON'dan soruları yükler
 /// 2) Kullanıcıya tek tek soruları gösterir
 /// 3) Cevapları toplar
-/// 4) Son soruda “Kanal Bul” → Sonuç ekranına yollar
+/// 4) Son soruda “Araba Bul” → Sonuç ekranına yollar
 /// --------------------------------------------------------------
-class YoutubeView extends StatefulWidget {
-  const YoutubeView({super.key});
+class CarView extends StatefulWidget {
+  const CarView({super.key});
 
   @override
-  State<YoutubeView> createState() => _YoutubeViewState();
+  State<CarView> createState() => _YoutubeViewState();
 }
 
 /// --------------------------------------------------------------
 /// STATE SINIFI
 /// Ekranın dinamik olarak değişen verileri burada saklanır.
 /// --------------------------------------------------------------
-class _YoutubeViewState extends State<YoutubeView> {
+class _YoutubeViewState extends State<CarView> {
   // JSON'dan gelecek soru listesi
   List<QuestionModel> questions = [];
 
@@ -60,39 +60,81 @@ class _YoutubeViewState extends State<YoutubeView> {
   /// Servis sınıfından soruları çekip listeye atar
   /// --------------------------------------------------------------
   Future<void> loadQuestions() async {
-    questions = await YoutubeQuestionRepo.loadQuestions(); // Servisi çağır
+    questions = await CarQuestionRepo.loadQuestions(); // Servisi çağır
     setState(() => loading = false); // Artık ekrana çizilebilir
   }
 
   /// --------------------------------------------------------------
   /// SORU İNPUT ALANI OLUŞTURMA
-  /// Soru type: "select" → Dropdown
-  /// Soru type: "text" → TextField
+  /// Soru type: "select" → Seçenekler alt alta kart şeklinde
+  /// Soru type: "text"   → TextField
   /// --------------------------------------------------------------
   Widget buildInput(QuestionModel q) {
-    // Eğer soru dropdown tipi ise
+    // Eğer soru seçenekli ise (select)
     if (q.type == "select") {
-      return DropdownButtonFormField<String>(
-        value:
-            answers[q
-                .id], // Eğer bu soruya daha önce cevap verilmişse o gözüksün
+      final String? selected = answers[q.id] as String?;
 
-        decoration: InputDecoration(
-          hintText: "Seçim yap", // Placeholder
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 16,
-          ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        ),
+      return Column(
+        children: q.options!.map((option) {
+          final bool isSelected = option == selected;
 
-        // JSON’daki seçenekleri dropdown içine ekle
-        items: q.options!
-            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-            .toList(),
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () {
+                // 1) Cevabı kaydet
+                setState(() {
+                  answers[q.id] = option;
+                });
 
-        // Kullanıcı seçim yaptığında cevap kaydet
-        onChanged: (v) => setState(() => answers[q.id] = v),
+                // 2) Otomatik olarak bir sonraki soruya geç
+                // (Son sorudaysa next() zaten sonuç ekranına yönlendirir)
+                next();
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.grey.shade300,
+                    width: 1.5,
+                  ),
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.primary.withOpacity(0.06)
+                      : Colors.white,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        option,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      isSelected ? Icons.check_circle : Icons.circle_outlined,
+                      size: 22,
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
       );
     }
 
@@ -123,7 +165,8 @@ class _YoutubeViewState extends State<YoutubeView> {
     final q = questions[index];
 
     // Eğer soru required ise ve cevap yoksa uyarı göster
-    if (q.required && answers[q.id] == null) {
+    if (q.required &&
+        (answers[q.id] == null || answers[q.id].toString().isEmpty)) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("${q.label} gerekli")));
@@ -142,7 +185,7 @@ class _YoutubeViewState extends State<YoutubeView> {
     else {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => YoutubeResultView(answers: answers)),
+        MaterialPageRoute(builder: (_) => CarResultView(answers: answers)),
       );
     }
   }
@@ -173,7 +216,7 @@ class _YoutubeViewState extends State<YoutubeView> {
 
     // Eğer sorular yüklendiyse ekranı çiz
     return Scaffold(
-      appBar: AppBar(title: const Text("YouTube Kanal Bul")), // Sayfa başlığı
+      appBar: AppBar(title: const Text("Araba Bul")), // Sayfa başlığı
 
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -189,19 +232,20 @@ class _YoutubeViewState extends State<YoutubeView> {
             const SizedBox(height: 20),
 
             // 2) Input alanı PageView içinde tek tek gösterilir
-            SizedBox(
-              height: 180,
+            Expanded(
               child: PageView.builder(
                 controller: _pageController, // PageController
                 physics:
                     const NeverScrollableScrollPhysics(), // Kullanıcı kaydıramaz
                 itemCount: questions.length, // toplam soru sayısı
                 // Sadece o anki index’in inputu gösterilir
-                itemBuilder: (_, i) => buildInput(questions[index]),
+                itemBuilder: (_, i) =>
+                    SingleChildScrollView(child: buildInput(questions[index])),
               ),
             ),
 
-            const Spacer(), // Boşluk bırakır
+            const SizedBox(height: 16),
+
             // 3) Alt butonlar
             Row(
               children: [
@@ -216,13 +260,13 @@ class _YoutubeViewState extends State<YoutubeView> {
 
                 if (index > 0) const SizedBox(width: 12),
 
-                // İleri veya Kanal Bul butonu
+                // İleri veya Araba Bul butonu
                 Expanded(
                   child: ElevatedButton(
                     onPressed: next,
                     child: Text(
                       index == questions.length - 1
-                          ? "Kanal Bul" // Son soru
+                          ? "Araba Bul" // Son soru
                           : "İleri", // Diğer sorular
                     ),
                   ),
