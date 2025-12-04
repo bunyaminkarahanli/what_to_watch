@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:what_to_watch/auth/signin/view/signin_view.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
 import 'package:what_to_watch/onboarding/service/onboarding_service.dart';
 
@@ -12,6 +10,7 @@ class CarOnboardingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final OnboardingService _onboardingService = OnboardingService();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -27,9 +26,7 @@ class CarOnboardingView extends StatelessWidget {
                       height: 280,
                       fit: BoxFit.contain,
                     ),
-
                     const SizedBox(height: 30),
-
                     const Text(
                       "Sana En Uygun Arabayı Bul",
                       textAlign: TextAlign.center,
@@ -39,13 +36,12 @@ class CarOnboardingView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-
                     Text(
                       "Birkaç basit soruya cevap ver, ihtiyaçlarına göre sana en uygun araba önerilerini gösterelim.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15,
-                        color: Colors.grey[700],
+                        color: Colors.grey,
                         height: 1.5,
                       ),
                     ),
@@ -55,13 +51,12 @@ class CarOnboardingView extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // Alt kısım: Google ile devam et & Kayıt ol
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    bool success = await _onboardingService.onGoogleContinue();
-
+                    final success = await _onboardingService.onGoogleContinue();
+                    if (!context.mounted) return;
                     if (success) {
                       Navigator.pushReplacement(
                         context,
@@ -117,9 +112,7 @@ class CarOnboardingView extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    backgroundColor: const Color(
-                      0xFF3F51B5,
-                    ), // Google butonları genelde beyaz olur
+                    backgroundColor: const Color(0xFF3F51B5),
                     foregroundColor: Colors.white,
                   ),
                   child: const Text("Kayıt ol", style: TextStyle(fontSize: 16)),
@@ -134,36 +127,3 @@ class CarOnboardingView extends StatelessWidget {
     );
   }
 }
-
-// Future<void> _onGoogleContinue(BuildContext context) async {
-//   try {
-//     // 1. Google hesabını seç
-//     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-//     if (gUser == null) {
-//       // Kullanıcı iptal etti
-//       return;
-//     }
-
-//     // 2. Google auth bilgilerini al
-//     final GoogleSignInAuthentication gAuth = await gUser.authentication;
-
-//     // 3. Firebase credential oluştur
-//     final credential = GoogleAuthProvider.credential(
-//       accessToken: gAuth.accessToken,
-//       idToken: gAuth.idToken,
-//     );
-
-//     // 4. Firebase ile giriş yap
-//     await FirebaseAuth.instance.signInWithCredential(credential);
-
-//     // 5. Başarılı → uygulamaya geç
-//     Navigator.pushReplacement(
-//       context,
-//       MaterialPageRoute(builder: (_) => const BottomBarView()),
-//     );
-//   } catch (e) {
-//     ScaffoldMessenger.of(
-//       context,
-//     ).showSnackBar(SnackBar(content: Text('Google ile giriş hatası: $e')));
-//   }
-// }

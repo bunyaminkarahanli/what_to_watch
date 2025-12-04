@@ -26,7 +26,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-              Image.asset('assets/images/onboar2.png', height: 180),
+              Image.asset('assets/images/3.png', height: 300),
               const SizedBox(height: 30),
               Text("Şifreni mi unuttun?", style: theme.textTheme.headlineLarge),
               const SizedBox(height: 12),

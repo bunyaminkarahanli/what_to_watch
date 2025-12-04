@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:what_to_watch/auth/signin/view/signin_view.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // ✅ EKLENDİ
+
 import 'package:what_to_watch/home/bottom_bar_view.dart';
 import 'package:what_to_watch/onboarding/view/car_onboarding_view.dart';
 import 'package:what_to_watch/providers/theme_provider.dart';
 
 class MyApp extends StatelessWidget {
-  final bool isLoggedIn;
-  const MyApp({super.key, required this.isLoggedIn});
+  const MyApp({super.key}); // ✅ isLoggedIn parametresi KALDIRILDI
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
           headlineLarge: const TextStyle(
             fontSize: 45,
             fontWeight: FontWeight.w700,
-            color: Color(0xFFD1D5FF), // açık mor ton
+            color: Color(0xFFD1D5FF),
             letterSpacing: 0.5,
           ),
           titleMedium: const TextStyle(
@@ -122,7 +122,37 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
 
-      home: CarOnboardingView(),
+      // ✅ ESKİ: home: CarOnboardingView(),
+      // ✅ YENİ:
+      home: const RootController(),
+    );
+  }
+}
+
+/// ✅ Firebase durumuna göre hangi ekranın açılacağını belirleyen widget
+class RootController extends StatelessWidget {
+  const RootController({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // Firebase dinlenirken loading göstermek için
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // Kullanıcı giriş yapmışsa → direkt ana sayfa
+        if (snapshot.hasData) {
+          return const BottomBarView();
+        }
+
+        // Kullanıcı giriş yapmamışsa → onboarding göster
+        return const CarOnboardingView();
+      },
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:what_to_watch/auth/local/auth_local_service.dart';
+
 import 'package:what_to_watch/auth/signup/services/signup_service.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
 
@@ -31,7 +31,7 @@ class _SignupViewState extends State<SignupView> {
           child: Column(
             children: [
               const SizedBox(height: 60),
-              Image.asset('assets/images/onboar3.png', height: 200),
+              Image.asset('assets/images/2.png', height: 200),
               const SizedBox(height: 40),
               Text('Kayıt Ol', style: theme.textTheme.headlineLarge),
               const SizedBox(height: 12),
@@ -54,6 +54,8 @@ class _SignupViewState extends State<SignupView> {
                     confirmPasswordBuild(),
                     SizedBox(height: 32),
                     signupButtonBuild(),
+                    const SizedBox(height: 4),
+                    comeBackButtonBuild(context),
                   ],
                 ),
               ),
@@ -61,6 +63,13 @@ class _SignupViewState extends State<SignupView> {
           ),
         ),
       ),
+    );
+  }
+
+  TextButton comeBackButtonBuild(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: const Text("Geri Dön"),
     );
   }
 
@@ -75,7 +84,7 @@ class _SignupViewState extends State<SignupView> {
               password: _passwordController.text,
               name: _nameController.text,
             );
-            await AuthLocalService().saveLogin(_emailController.text.trim());
+
             // Başarılı durumda kullanıcıya bilgi ver
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
