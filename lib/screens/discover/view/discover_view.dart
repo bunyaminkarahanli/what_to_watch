@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/screens/car/view/car_view.dart';
-import 'package:what_to_watch/screens/kick/view/kick_view.dart';
+import 'package:what_to_watch/screens/motorcycle/view/motorcycle_view.dart';
 
 import 'package:what_to_watch/widgets/discover_card.dart';
 
@@ -24,7 +24,7 @@ class _DiscoverViewState extends State<DiscoverView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Discover")),
+      appBar: AppBar(title: const Text("Keşfet")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
@@ -37,21 +37,17 @@ class _DiscoverViewState extends State<DiscoverView> {
           ),
           itemBuilder: (context, index) {
             final item = items[index];
+            final title = item["title"] as String;
+
             return DiscoverCard(
-              title: item["title"],
+              title: title,
               imageUrl: item["image"],
+              subtitle: title == "Motosiklet" ? "Yakında" : null,
               onTap: () {
-                if (item["title"] == "Araba") {
+                if (title == "Araba") {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const CarView()),
-                  );
-                } else if (item["title"] == "Motosiklet") {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MotorcycleView(),
-                    ),
                   );
                 }
               },

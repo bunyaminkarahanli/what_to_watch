@@ -32,7 +32,7 @@ class _ProfileViewState extends State<ProfileView> {
             const SizedBox(height: 20),
             CircleAvatar(
               radius: 100,
-              backgroundImage: AssetImage('assets/images/gamer.png'),
+              backgroundImage: AssetImage('assets/images/car_profile.png'),
             ),
             const SizedBox(height: 12),
             Text(

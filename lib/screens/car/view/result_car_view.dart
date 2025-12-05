@@ -62,6 +62,9 @@ class _CarResultViewState extends State<CarResultView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Önerilen Arabalar")),
       body: loading
@@ -73,7 +76,7 @@ class _CarResultViewState extends State<CarResultView> {
                 child: Text(
                   error!,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16),
+                  style: theme.textTheme.bodyMedium?.copyWith(fontSize: 16),
                 ),
               ),
             )
@@ -87,11 +90,15 @@ class _CarResultViewState extends State<CarResultView> {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    // 🌙🌞 Tema tabanlı kart rengi
+                    color: theme.cardColor, // veya theme.colorScheme.surface
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.07),
+                        // Dark modda gölgeyi biraz daha hafif ya da şeffaf kullan
+                        color: isDark
+                            ? Colors.black.withOpacity(0.5)
+                            : Colors.black.withOpacity(0.07),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -102,34 +109,33 @@ class _CarResultViewState extends State<CarResultView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Model adı
+                        /// MODEL ADI
                         Text(
                           car["model"] ?? "Bilinmeyen Model",
-                          style: const TextStyle(
-                            fontSize: 20,
+                          style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         const SizedBox(height: 10),
 
-                        // Açıklama
+                        /// AÇIKLAMA
                         Text(
                           car["why"] ?? "",
-                          style: TextStyle(
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             fontSize: 15,
-                            color: Colors.grey[700],
                             height: 1.4,
+                            // Light/Dark moda göre hafif ton farkı
+                            color: isDark ? Colors.grey[300] : Colors.grey[700],
                           ),
                         ),
 
                         const SizedBox(height: 14),
 
-                        // ❤️ Favori butonu
+                        /// ❤️ FAVORİ BUTONU
                         Align(
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             onPressed: () async {
-                              // FAVORİYE EKLE / ÇIKAR
                               setState(() {
                                 if (isFavorite) {
                                   favoriteIndexes.remove(i);
@@ -138,7 +144,6 @@ class _CarResultViewState extends State<CarResultView> {
                                 }
                               });
 
-                              // Servise kaydet
                               await CarFavoriteService.saveCar(car);
 
                               if (!mounted) return;
@@ -154,13 +159,10 @@ class _CarResultViewState extends State<CarResultView> {
                                 ),
                               );
                             },
-
-                            /// İKON DURUMU
                             icon: Icon(
                               isFavorite
-                                  ? Icons
-                                        .favorite // DOLU KIRMIZI KALP
-                                  : Icons.favorite_border, // BOŞ KALP
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
                               color: Colors.red,
                               size: 30,
                             ),

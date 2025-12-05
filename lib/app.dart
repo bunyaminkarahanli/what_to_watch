@@ -8,14 +8,20 @@ import 'package:what_to_watch/onboarding/view/car_onboarding_view.dart';
 import 'package:what_to_watch/providers/theme_provider.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key}); // ✅ isLoggedIn parametresi KALDIRILDI
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
+
+    final baseLight = ThemeData.light();
+    final baseDark = ThemeData.dark();
+
     return MaterialApp(
       title: 'What to Watch',
       debugShowCheckedModeBanner: false,
+
+      // 🌞 LIGHT THEME
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF3F51B5),
@@ -31,27 +37,31 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF3F51B5),
           primary: const Color(0xFF3F51B5),
+          brightness: Brightness.light,
         ),
         useMaterial3: true,
         scaffoldBackgroundColor: const Color(0xFFF8F9FF),
-        textTheme: GoogleFonts.outfitTextTheme().copyWith(
-          headlineLarge: const TextStyle(
+
+        // 🔥 BURAYI DÜZELTTİK
+        textTheme: GoogleFonts.outfitTextTheme(baseLight.textTheme).copyWith(
+          headlineLarge: baseLight.textTheme.headlineLarge?.copyWith(
             fontSize: 45,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF3F51B5),
+            color: const Color(0xFF3F51B5),
             letterSpacing: 0.5,
           ),
-          titleMedium: const TextStyle(
+          titleMedium: baseLight.textTheme.titleMedium?.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w500,
             color: Colors.black87,
           ),
-          bodyMedium: const TextStyle(
+          bodyMedium: baseLight.textTheme.bodyMedium?.copyWith(
             fontSize: 16,
             color: Colors.black54,
             height: 1.5,
           ),
         ),
+
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF3F51B5),
@@ -67,6 +77,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+
+      // 🌚 DARK THEME
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         appBarTheme: const AppBarTheme(
@@ -87,24 +99,27 @@ class MyApp extends StatelessWidget {
           secondary: Colors.deepPurpleAccent,
         ),
         scaffoldBackgroundColor: const Color(0xFF121212),
-        textTheme: GoogleFonts.outfitTextTheme().copyWith(
-          headlineLarge: const TextStyle(
+
+        // 🔥 BURAYI DA DÜZELTTİK
+        textTheme: GoogleFonts.outfitTextTheme(baseDark.textTheme).copyWith(
+          headlineLarge: baseDark.textTheme.headlineLarge?.copyWith(
             fontSize: 45,
             fontWeight: FontWeight.w700,
-            color: Color(0xFFD1D5FF),
+            color: const Color(0xFFD1D5FF),
             letterSpacing: 0.5,
           ),
-          titleMedium: const TextStyle(
+          titleMedium: baseDark.textTheme.titleMedium?.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w500,
             color: Colors.white,
           ),
-          bodyMedium: const TextStyle(
+          bodyMedium: baseDark.textTheme.bodyMedium?.copyWith(
             fontSize: 16,
             color: Colors.white70,
             height: 1.5,
           ),
         ),
+
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF3F51B5),
@@ -120,10 +135,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
 
-      // ✅ ESKİ: home: CarOnboardingView(),
-      // ✅ YENİ:
+      themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
       home: const RootController(),
     );
   }

@@ -70,7 +70,9 @@ class _YoutubeViewState extends State<CarView> {
   /// Soru type: "text"   → TextField
   /// --------------------------------------------------------------
   Widget buildInput(QuestionModel q) {
-    // Eğer soru seçenekli ise (select)
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     if (q.type == "select") {
       final String? selected = answers[q.id] as String?;
 
@@ -83,13 +85,9 @@ class _YoutubeViewState extends State<CarView> {
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: () {
-                // 1) Cevabı kaydet
                 setState(() {
                   answers[q.id] = option;
                 });
-
-                // 2) Otomatik olarak bir sonraki soruya geç
-                // (Son sorudaysa next() zaten sonuç ekranına yönlendirir)
                 next();
               },
               child: Container(
@@ -101,24 +99,33 @@ class _YoutubeViewState extends State<CarView> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected
-                        ? Theme.of(context).colorScheme.primary
-                        : Colors.grey.shade300,
+                        ? theme.colorScheme.primary
+                        : theme.dividerColor,
                     width: 1.5,
                   ),
+                  // 🌙🌞 Dark/Light moda göre arkaplan
                   color: isSelected
-                      ? Theme.of(context).colorScheme.primary.withOpacity(0.06)
-                      : Colors.white,
+                      ? theme.colorScheme.primary.withOpacity(0.12)
+                      : (isDark
+                            ? theme
+                                  .colorScheme
+                                  .surface // koyu kart
+                            : Colors.white), // açık kart
                 ),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
                         option,
-                        style: TextStyle(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           fontSize: 16,
                           fontWeight: isSelected
                               ? FontWeight.w600
                               : FontWeight.w400,
+                          // Yazı rengi de seçime göre
+                          color: isSelected
+                              ? theme.colorScheme.onPrimary
+                              : theme.colorScheme.onSurface,
                         ),
                       ),
                     ),
@@ -126,8 +133,8 @@ class _YoutubeViewState extends State<CarView> {
                       isSelected ? Icons.check_circle : Icons.circle_outlined,
                       size: 22,
                       color: isSelected
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.grey,
+                          ? theme.colorScheme.primary
+                          : theme.iconTheme.color,
                     ),
                   ],
                 ),
@@ -138,18 +145,16 @@ class _YoutubeViewState extends State<CarView> {
       );
     }
 
-    // Eğer soru text input ise
+    // text input kısmı aynen kalabilir ama istersen onu da tema ile uyumlu yapabiliriz
     return TextField(
       decoration: InputDecoration(
-        hintText: q.placeholder ?? "", // JSON’daki placeholder
+        hintText: q.placeholder ?? "",
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 16,
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
-
-      // Kullanıcı yazdıkça cevabı kaydeder
       onChanged: (v) => answers[q.id] = v,
     );
   }

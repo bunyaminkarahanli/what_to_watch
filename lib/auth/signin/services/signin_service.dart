@@ -12,11 +12,8 @@ class SigninService {
   }) async {
     try {
       // Firebase Authentication ile giriş yap
-      final UserCredential userCredential =
-          await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
+      final UserCredential userCredential = await _auth
+          .signInWithEmailAndPassword(email: email.trim(), password: password);
 
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
@@ -47,4 +44,3 @@ class SigninService {
     }
   }
 }
-
