@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/screens/car/view/car_view.dart';
-import 'package:what_to_watch/screens/motorcycle/view/motorcycle_view.dart';
-
 import 'package:what_to_watch/widgets/discover_card.dart';
 
 class DiscoverView extends StatefulWidget {

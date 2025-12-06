@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:what_to_watch/auth/signup/services/signup_service.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
@@ -30,8 +31,11 @@ class _SignupViewState extends State<SignupView> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              const SizedBox(height: 60),
-              Image.asset('assets/images/2.png', height: 200),
+              Lottie.asset(
+                'assets/animations/register.json',
+                height: 240,
+                fit: BoxFit.contain,
+              ),
               const SizedBox(height: 40),
               Text('Kayıt Ol', style: theme.textTheme.headlineLarge),
               const SizedBox(height: 12),

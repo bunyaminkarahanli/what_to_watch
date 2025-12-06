@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/auth/forgotpassword/view/forgot_password_view.dart';
-
+import 'package:lottie/lottie.dart';
 import 'package:what_to_watch/auth/signin/services/signin_service.dart';
 import 'package:what_to_watch/auth/signup/view/signup_view.dart';
 import 'package:what_to_watch/home/bottom_bar_view.dart';
+import 'package:what_to_watch/onboarding/service/onboarding_service.dart';
 
 class SigninView extends StatefulWidget {
   const SigninView({super.key});
@@ -21,6 +22,8 @@ class _SigninViewState extends State<SigninView> {
 
   @override
   Widget build(BuildContext context) {
+    final OnboardingService _onboardingService = OnboardingService();
+
     final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
@@ -29,8 +32,11 @@ class _SigninViewState extends State<SigninView> {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                const SizedBox(height: 60),
-                Image.asset('assets/images/1.png', height: 200),
+                Lottie.asset(
+                  'assets/animations/signin.json',
+                  height: 240,
+                  fit: BoxFit.contain,
+                ),
                 const SizedBox(height: 40),
                 Text('Giriş yap', style: theme.textTheme.headlineLarge),
                 const SizedBox(height: 12),
@@ -53,6 +59,53 @@ class _SigninViewState extends State<SigninView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [forgotPasswordBuild(), SignupButtonBuild()],
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final success = await _onboardingService
+                                .onGoogleContinue();
+                            if (!context.mounted) return;
+                            if (success) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const BottomBarView(),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Google ile giriş başarısız!"),
+                                ),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            backgroundColor: const Color(0xFF3F51B5),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/icons/google.png",
+                                height: 22,
+                                width: 22,
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                "Google ile devam et",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),

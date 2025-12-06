@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:what_to_watch/auth/forgotpassword/services/forgot_password_service.dart';
+import 'package:lottie/lottie.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
@@ -26,7 +27,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-              Image.asset('assets/images/3.png', height: 300),
+              Lottie.asset(
+                'assets/animations/forget.json',
+                height: 240,
+                fit: BoxFit.contain,
+              ),
               const SizedBox(height: 30),
               Text("Şifreni mi unuttun?", style: theme.textTheme.headlineLarge),
               const SizedBox(height: 12),

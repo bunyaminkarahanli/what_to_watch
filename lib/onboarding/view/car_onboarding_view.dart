@@ -22,13 +22,13 @@ class CarOnboardingView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Lottie.asset(
-                      'assets/animations/car.json',
+                      'assets/animations/questioning.json',
                       height: 280,
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 30),
                     const Text(
-                      "Sana En Uygun Arabayı Bul",
+                      "Sana En Uygun Tavsiyeyi Bul",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,
@@ -37,7 +37,7 @@ class CarOnboardingView extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "Birkaç basit soruya cevap ver, ihtiyaçlarına göre sana en uygun araba önerilerini gösterelim.",
+                      "Birkaç basit soruya cevap ver, ihtiyaçlarına göre sana en uygun önerileri gösterelim.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15,
