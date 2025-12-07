@@ -19,7 +19,7 @@ class _CarResultViewState extends State<CarResultView> {
 
   List<Map<String, String>> recommended = [];
 
-  /// FAVORİLERE ALINAN KARTLARIN INDEXLERİNİ TUTUYORUZ
+  /// Favori alınan kartların indexlerini tutuyoruz
   Set<int> favoriteIndexes = {};
 
   @override
@@ -42,8 +42,17 @@ class _CarResultViewState extends State<CarResultView> {
     } catch (e) {
       if (!mounted) return;
 
+      String message = e.toString();
+
+      // Kullanım limiti özel mesajı
+      if (message.contains("limit_exceeded") ||
+          message.contains("Ücretsiz araç önerisi hakkınız bitti")) {
+        message =
+            "Ücretsiz araç önerisi hakkınız bitti.\nDevam etmek için paket satın almanız gerekiyor.";
+      }
+
       setState(() {
-        error = "Bir hata oluştu: $e";
+        error = message;
         loading = false;
       });
     }
@@ -136,17 +145,18 @@ class _CarResultViewState extends State<CarResultView> {
 
                             const SizedBox(height: 12),
 
-                            /// ALT SATIR: ARACA GİT + FAVORİ AYNI HİZADA
+                            /// ALT SATIR: ARACA GİT + FAVORİ
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                // 🔎 ARACA GİT BUTONU
                                 TextButton.icon(
                                   onPressed: () =>
                                       _openCarInGoogle("$model araba"),
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                       side: const BorderSide(
@@ -163,10 +173,7 @@ class _CarResultViewState extends State<CarResultView> {
                                     style: TextStyle(fontSize: 13),
                                   ),
                                 ),
-
                                 const SizedBox(width: 8),
-
-                                //  FAVORİ BUTONU
                                 IconButton(
                                   onPressed: () async {
                                     setState(() {

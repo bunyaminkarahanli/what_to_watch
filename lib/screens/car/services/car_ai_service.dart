@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CarAIService {
-  // ARTIK RENDER'DAKİ BACKENDİ KULLANIYORUZ
+  // Render backend URL
   final String baseUrl = "https://what-to-watch-backend.onrender.com";
 
   CarAIService();
@@ -20,17 +20,29 @@ class CarAIService {
       body: jsonEncode(prefs),
     );
 
+    // 🔥 Backend hata döndüyse özel mesaj üret
     if (response.statusCode != 200) {
-      throw Exception(
-        "Backend error: ${response.statusCode} - ${response.body}",
-      );
+      String message = "Backend error: ${response.statusCode}";
+
+      try {
+        final err = jsonDecode(response.body);
+
+        if (err is Map && err["message"] != null) {
+          message = err["message"];
+        }
+      } catch (_) {
+        // JSON değilse default mesaj kalır
+      }
+
+      throw Exception(message);
     }
 
+    // 🔥 Başarılı cevap
     final parsed = jsonDecode(response.body);
 
     if (parsed is! List) {
       throw Exception(
-        "Beklenen format: List, ama gelen: ${parsed.runtimeType}",
+        "Beklenen format: List, fakat gelen: ${parsed.runtimeType}",
       );
     }
 

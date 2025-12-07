@@ -1,6 +1,9 @@
 // Flutter UI kütüphanesini projeye dahil ediyoruz
 import 'package:flutter/material.dart';
 
+// ✅ Firebase Auth import
+import 'package:firebase_auth/firebase_auth.dart';
+
 // Sonuç ekranını import ediyoruz
 import 'package:what_to_watch/screens/car/view/result_car_view.dart';
 
@@ -103,12 +106,9 @@ class _YoutubeViewState extends State<CarView> {
                         : theme.dividerColor,
                     width: 1.5,
                   ),
-                  // 🌙🌞 Dark/Light moda göre arkaplan
                   color: isSelected
                       ? theme.colorScheme.primary.withOpacity(0.12)
-                      : (isDark
-                          ? theme.colorScheme.surface // koyu kart
-                          : Colors.white), // açık kart
+                      : (isDark ? theme.colorScheme.surface : Colors.white),
                 ),
                 child: Row(
                   children: [
@@ -119,7 +119,6 @@ class _YoutubeViewState extends State<CarView> {
                           fontSize: 16,
                           fontWeight:
                               isSelected ? FontWeight.w600 : FontWeight.w400,
-                          // Yazı rengi de seçime göre
                           color: isSelected
                               ? theme.colorScheme.onPrimary
                               : theme.colorScheme.onSurface,
@@ -142,7 +141,7 @@ class _YoutubeViewState extends State<CarView> {
       );
     }
 
-    // text input kısmı aynen kalabilir ama istersen onu da tema ile uyumlu yapabiliriz
+    // text input
     return TextField(
       decoration: InputDecoration(
         hintText: q.placeholder ?? "",
@@ -185,9 +184,17 @@ class _YoutubeViewState extends State<CarView> {
     }
     // Eğer son sorudaysa → Sonuç ekranına geç
     else {
+      // ✅ Firebase UID'yi cevaba ekliyoruz
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid != null) {
+        answers['userId'] = uid;
+      }
+
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => CarResultView(answers: answers)),
+        MaterialPageRoute(
+          builder: (_) => CarResultView(answers: answers),
+        ),
       );
     }
   }
@@ -211,15 +218,12 @@ class _YoutubeViewState extends State<CarView> {
   /// --------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    // Eğer sorular hala yükleniyorsa loading göster
     if (loading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    // Eğer sorular yüklendiyse ekranı çiz
     return Scaffold(
-      appBar: AppBar(title: const Text("Araba Bul")), // Sayfa başlığı
-
+      appBar: AppBar(title: const Text("Araba Bul")),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -236,11 +240,9 @@ class _YoutubeViewState extends State<CarView> {
             // 2) Input alanı PageView içinde tek tek gösterilir
             Expanded(
               child: PageView.builder(
-                controller: _pageController, // PageController
-                physics:
-                    const NeverScrollableScrollPhysics(), // Kullanıcı kaydıramaz
-                itemCount: questions.length, // toplam soru sayısı
-                // Sadece o anki index’in inputu gösterilir
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: questions.length,
                 itemBuilder: (_, i) =>
                     SingleChildScrollView(child: buildInput(questions[index])),
               ),
@@ -251,7 +253,6 @@ class _YoutubeViewState extends State<CarView> {
             // 3) Alt butonlar
             Row(
               children: [
-                // Geri butonu (ilk soruda gösterilmez)
                 if (index > 0)
                   Expanded(
                     child: OutlinedButton(
@@ -259,17 +260,12 @@ class _YoutubeViewState extends State<CarView> {
                       child: const Text("Geri"),
                     ),
                   ),
-
                 if (index > 0) const SizedBox(width: 12),
-
-                // İleri veya Araba Bul butonu
                 Expanded(
                   child: ElevatedButton(
                     onPressed: next,
                     child: Text(
-                      index == questions.length - 1
-                          ? "Araba Bul" // Son soru
-                          : "İleri", // Diğer sorular
+                      index == questions.length - 1 ? "Araba Bul" : "İleri",
                     ),
                   ),
                 ),
