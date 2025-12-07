@@ -107,10 +107,8 @@ class _YoutubeViewState extends State<CarView> {
                   color: isSelected
                       ? theme.colorScheme.primary.withOpacity(0.12)
                       : (isDark
-                            ? theme
-                                  .colorScheme
-                                  .surface // koyu kart
-                            : Colors.white), // açık kart
+                          ? theme.colorScheme.surface // koyu kart
+                          : Colors.white), // açık kart
                 ),
                 child: Row(
                   children: [
@@ -119,9 +117,8 @@ class _YoutubeViewState extends State<CarView> {
                         option,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontSize: 16,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
                           // Yazı rengi de seçime göre
                           color: isSelected
                               ? theme.colorScheme.onPrimary

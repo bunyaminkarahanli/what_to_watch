@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:what_to_watch/screens/favorite/services/car_favorite_service.dart';
@@ -31,18 +30,7 @@ class _CarResultViewState extends State<CarResultView> {
 
   Future<void> loadFromAI() async {
     try {
-      final apiKey = dotenv.env["OPENAI_KEY"];
-
-      if (apiKey == null || apiKey.isEmpty) {
-        setState(() {
-          error =
-              "API anahtarı bulunamadı (OPENAI_KEY). Lütfen .env dosyanı kontrol et.";
-          loading = false;
-        });
-        return;
-      }
-
-      final ai = CarAIService(apiKey);
+      final ai = CarAIService();
       final result = await ai.fetchRecommendedCars(widget.answers);
 
       if (!mounted) return;
@@ -161,7 +149,7 @@ class _CarResultViewState extends State<CarResultView> {
                                         horizontal: 12, vertical: 6),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                         color: Color(0xFF3F51B5),
                                       ),
                                     ),
