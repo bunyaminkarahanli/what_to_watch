@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:what_to_watch/screens/favorite/services/car_favorite_service.dart';
 import 'package:what_to_watch/screens/car/services/car_ai_service.dart';
+import 'package:what_to_watch/screens/car/view/purchase_credits_view.dart';
 
 class CarResultView extends StatefulWidget {
   final Map<String, dynamic> answers;
@@ -87,10 +88,30 @@ class _CarResultViewState extends State<CarResultView> {
               ? Center(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text(
-                      error!,
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium?.copyWith(fontSize: 16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          error!,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(fontSize: 16),
+                        ),
+                        const SizedBox(height: 12),
+                        if (error!
+                            .contains("Ücretsiz araç önerisi hakkınız bitti"))
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const PurchaseCreditsView(),
+                                ),
+                              );
+                            },
+                            child: const Text("Öneri Paketi Satın Al"),
+                          ),
+                      ],
                     ),
                   ),
                 )
