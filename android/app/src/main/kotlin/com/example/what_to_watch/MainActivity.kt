@@ -1,4 +1,5 @@
-package com.example.what_to_watch
+package com.hangi.app
+
 
 import io.flutter.embedding.android.FlutterActivity
 

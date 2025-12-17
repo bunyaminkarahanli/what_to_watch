@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:44741937465:android:433390149da1724339c0e8",
+        "mobilesdk_app_id": "1:44741937465:android:097b43afb6b4483839c0e8",
         "android_client_info": {
-          "package_name": "com.example.what_to_watch"
+          "package_name": "com.hangi.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "44741937465-g6t7c5urh6ip4l78919dqji4mqb8075p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hangi.app",
+            "certificate_hash": "aab2931f6e003d49121d5dad603e50b484d65f96"
+          }
+        },
+        {
+          "client_id": "44741937465-0ru4knqqqlujao32dq4u8ijchbt5iqbh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDtqbPwr9dmzL6V-73WFKg7aQ1kHvZhfVM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44741937465-0ru4knqqqlujao32dq4u8ijchbt5iqbh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "44741937465-hafrt5og89f2glfv3rtqbcjgjc5mrsjn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.whatToWatch"
+              }
+            }
+          ]
         }
       }
     }

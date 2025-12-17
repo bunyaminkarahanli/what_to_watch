@@ -25,14 +25,14 @@ class CarView extends StatefulWidget {
   const CarView({super.key});
 
   @override
-  State<CarView> createState() => _YoutubeViewState();
+  State<CarView> createState() => _CarViewState();
 }
 
 /// --------------------------------------------------------------
 /// STATE SINIFI
 /// Ekranın dinamik olarak değişen verileri burada saklanır.
 /// --------------------------------------------------------------
-class _YoutubeViewState extends State<CarView> {
+class _CarViewState extends State<CarView> {
   // JSON'dan gelecek soru listesi
   List<QuestionModel> questions = [];
 

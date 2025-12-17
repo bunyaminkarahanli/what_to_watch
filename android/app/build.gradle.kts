@@ -9,7 +9,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.what_to_watch"
+    // ✅ Hangi için doğru namespace
+    namespace = "com.hangi.app"
+
+    // Şimdilik Flutter'dan gelen değerler kalsın
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -23,20 +26,20 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.what_to_watch"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // ✅ Hangi için doğru applicationId
+        applicationId = "com.hangi.app"
+
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
+
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // ⚠️ Şimdilik debug ile kalsın (app çalışsın diye)
+            // Play Store öncesi bunu değiştireceğiz
             signingConfig = signingConfigs.getByName("debug")
         }
     }

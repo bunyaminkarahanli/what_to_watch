@@ -39,11 +39,12 @@ class _CarResultViewState extends State<CarResultView> {
       setState(() {
         recommended = result;
         loading = false;
+        error = null;
       });
     } catch (e) {
       if (!mounted) return;
 
-      String message = e.toString();
+      String message = e.toString().replaceFirst("Exception: ", "");
 
       // Kullanım limiti özel mesajı
       if (message.contains("limit_exceeded") ||
@@ -101,13 +102,21 @@ class _CarResultViewState extends State<CarResultView> {
                         if (error!
                             .contains("Ücretsiz araç önerisi hakkınız bitti"))
                           ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
+                            onPressed: () async {
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => const PurchaseCreditsView(),
                                 ),
                               );
+
+                              // ✅ satın alma ekranından dönünce tekrar dene
+                              if (!mounted) return;
+                              setState(() {
+                                loading = true;
+                                error = null;
+                              });
+                              await loadFromAI();
                             },
                             child: const Text("Öneri Paketi Satın Al"),
                           ),
@@ -197,8 +206,12 @@ class _CarResultViewState extends State<CarResultView> {
                                 const SizedBox(width: 8),
                                 IconButton(
                                   onPressed: () async {
+                                    // ✅ BUG FIX: snackbar mesajı doğru olsun
+                                    final wasFavorite =
+                                        favoriteIndexes.contains(i);
+
                                     setState(() {
-                                      if (isFavorite) {
+                                      if (wasFavorite) {
                                         favoriteIndexes.remove(i);
                                       } else {
                                         favoriteIndexes.add(i);
@@ -212,7 +225,7 @@ class _CarResultViewState extends State<CarResultView> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          isFavorite
+                                          wasFavorite
                                               ? "Favorilerden çıkarıldı"
                                               : "Favorilere eklendi!",
                                         ),
