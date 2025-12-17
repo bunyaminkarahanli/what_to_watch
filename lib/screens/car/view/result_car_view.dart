@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:what_to_watch/screens/favorite/services/car_favorite_service.dart';
@@ -19,8 +20,6 @@ class _CarResultViewState extends State<CarResultView> {
   String? error;
 
   List<Map<String, String>> recommended = [];
-
-  /// Favori alınan kartların indexlerini tutuyoruz
   Set<int> favoriteIndexes = {};
 
   @override
@@ -46,7 +45,6 @@ class _CarResultViewState extends State<CarResultView> {
 
       String message = e.toString().replaceFirst("Exception: ", "");
 
-      // Kullanım limiti özel mesajı
       if (message.contains("limit_exceeded") ||
           message.contains("Ücretsiz araç önerisi hakkınız bitti")) {
         message =
@@ -84,7 +82,20 @@ class _CarResultViewState extends State<CarResultView> {
     return Scaffold(
       appBar: AppBar(title: const Text("Önerilen Arabalar")),
       body: loading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/car.json',
+                    width: 220,
+                    repeat: true,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text("Sana uygun arabaları düşünüyorum..."),
+                ],
+              ),
+            )
           : error != null
               ? Center(
                   child: Padding(
@@ -110,7 +121,6 @@ class _CarResultViewState extends State<CarResultView> {
                                 ),
                               );
 
-                              // ✅ satın alma ekranından dönünce tekrar dene
                               if (!mounted) return;
                               setState(() {
                                 loading = true;
@@ -152,7 +162,6 @@ class _CarResultViewState extends State<CarResultView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            /// MODEL ADI
                             Text(
                               model,
                               style: theme.textTheme.titleLarge?.copyWith(
@@ -160,8 +169,6 @@ class _CarResultViewState extends State<CarResultView> {
                               ),
                             ),
                             const SizedBox(height: 10),
-
-                            /// AÇIKLAMA
                             Text(
                               car["why"] ?? "",
                               style: theme.textTheme.bodyMedium?.copyWith(
@@ -172,10 +179,7 @@ class _CarResultViewState extends State<CarResultView> {
                                     : Colors.grey[700],
                               ),
                             ),
-
                             const SizedBox(height: 12),
-
-                            /// ALT SATIR: ARACA GİT + FAVORİ
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -190,14 +194,10 @@ class _CarResultViewState extends State<CarResultView> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                       side: const BorderSide(
-                                        color: Color(0xFF3F51B5),
-                                      ),
+                                          color: Color(0xFF3F51B5)),
                                     ),
                                   ),
-                                  icon: const Icon(
-                                    Icons.search,
-                                    size: 18,
-                                  ),
+                                  icon: const Icon(Icons.search, size: 18),
                                   label: const Text(
                                     "Araca git",
                                     style: TextStyle(fontSize: 13),
@@ -206,7 +206,6 @@ class _CarResultViewState extends State<CarResultView> {
                                 const SizedBox(width: 8),
                                 IconButton(
                                   onPressed: () async {
-                                    // ✅ BUG FIX: snackbar mesajı doğru olsun
                                     final wasFavorite =
                                         favoriteIndexes.contains(i);
 

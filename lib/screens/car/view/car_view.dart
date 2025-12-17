@@ -1,26 +1,11 @@
-// Flutter UI kütüphanesini projeye dahil ediyoruz
 import 'package:flutter/material.dart';
-
-// ✅ Firebase Auth import
+import 'package:lottie/lottie.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// Sonuç ekranını import ediyoruz
 import 'package:what_to_watch/screens/car/view/result_car_view.dart';
-
-// Soru modelimizi import ediyoruz
 import '../models/question_model.dart';
-
-// JSON’dan soruları okuyan servis dosyamızı import ediyoruz
 import '../services/question_service.dart';
 
-/// --------------------------------------------------------------
-/// ARABA SORU EKRANI
-/// Bu ekran:
-/// 1) JSON'dan soruları yükler
-/// 2) Kullanıcıya tek tek soruları gösterir
-/// 3) Cevapları toplar
-/// 4) Son soruda “Araba Bul” → Sonuç ekranına yollar
-/// --------------------------------------------------------------
 class CarView extends StatefulWidget {
   const CarView({super.key});
 
@@ -28,50 +13,26 @@ class CarView extends StatefulWidget {
   State<CarView> createState() => _CarViewState();
 }
 
-/// --------------------------------------------------------------
-/// STATE SINIFI
-/// Ekranın dinamik olarak değişen verileri burada saklanır.
-/// --------------------------------------------------------------
 class _CarViewState extends State<CarView> {
-  // JSON'dan gelecek soru listesi
   List<QuestionModel> questions = [];
-
-  // Sorular arasında geçiş için PageController
   final PageController _pageController = PageController();
-
-  // Kullanıcının verdiği cevaplar (id → cevap)
   final Map<String, dynamic> answers = {};
 
-  // Sorular yüklenirken loading animasyonu göstermek için
   bool loading = true;
-
-  // Kaçıncı soruda olduğumuzu tutar
   int index = 0;
 
-  /// --------------------------------------------------------------
-  /// initState()
-  /// Ekran açıldığında soru verilerini JSON'dan yükler
-  /// --------------------------------------------------------------
   @override
   void initState() {
     super.initState();
-    loadQuestions(); // JSON yükle
+    loadQuestions();
   }
 
-  /// --------------------------------------------------------------
-  /// JSON'daki soruları yükleyen fonksiyon
-  /// Servis sınıfından soruları çekip listeye atar
-  /// --------------------------------------------------------------
   Future<void> loadQuestions() async {
-    questions = await CarQuestionRepo.loadQuestions(); // Servisi çağır
-    setState(() => loading = false); // Artık ekrana çizilebilir
+    questions = await CarQuestionRepo.loadQuestions();
+    if (!mounted) return;
+    setState(() => loading = false);
   }
 
-  /// --------------------------------------------------------------
-  /// SORU İNPUT ALANI OLUŞTURMA
-  /// Soru type: "select" → Seçenekler alt alta kart şeklinde
-  /// Soru type: "text"   → TextField
-  /// --------------------------------------------------------------
   Widget buildInput(QuestionModel q) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -94,10 +55,8 @@ class _CarViewState extends State<CarView> {
                 next();
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
@@ -141,50 +100,35 @@ class _CarViewState extends State<CarView> {
       );
     }
 
-    // text input
     return TextField(
       decoration: InputDecoration(
         hintText: q.placeholder ?? "",
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 16,
-        ),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
       onChanged: (v) => answers[q.id] = v,
     );
   }
 
-  /// --------------------------------------------------------------
-  /// İLERİ BUTONU FONKSİYONU
-  /// - Zorunlu soru cevapsızsa uyarır
-  /// - Sonraki soruya geçer
-  /// - Son sorudaysa sonuç ekranına geçer
-  /// --------------------------------------------------------------
   void next() {
-    // Şu anki soruyu al
     final q = questions[index];
 
-    // Eğer soru required ise ve cevap yoksa uyarı göster
     if (q.required &&
         (answers[q.id] == null || answers[q.id].toString().isEmpty)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("${q.label} gerekli")));
-      return; // İleri gitme
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("${q.label} gerekli")),
+      );
+      return;
     }
 
-    // Eğer son soru değilse bir sonraki soruya geç
     if (index < questions.length - 1) {
-      setState(() => index++); // Soru indexini artır
+      setState(() => index++);
       _pageController.nextPage(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeOut,
       );
-    }
-    // Eğer son sorudaysa → Sonuç ekranına geç
-    else {
-      // ✅ Firebase UID'yi cevaba ekliyoruz
+    } else {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid != null) {
         answers['userId'] = uid;
@@ -199,13 +143,9 @@ class _CarViewState extends State<CarView> {
     }
   }
 
-  /// --------------------------------------------------------------
-  /// GERİ BUTONU FONKSİYONU
-  /// Bir önceki soruya döner
-  /// --------------------------------------------------------------
   void back() {
     if (index > 0) {
-      setState(() => index--); // index azalt
+      setState(() => index--);
       _pageController.previousPage(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
@@ -213,13 +153,25 @@ class _CarViewState extends State<CarView> {
     }
   }
 
-  /// --------------------------------------------------------------
-  /// ANA EKRAN
-  /// --------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'assets/animations/car.json',
+                width: 220,
+                repeat: true,
+              ),
+              const SizedBox(height: 12),
+              const Text("Sorular yükleniyor..."),
+            ],
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -229,28 +181,22 @@ class _CarViewState extends State<CarView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1) Soru başlığı
             Text(
               questions[index].label,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-
             const SizedBox(height: 20),
-
-            // 2) Input alanı PageView içinde tek tek gösterilir
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: questions.length,
-                itemBuilder: (_, i) =>
-                    SingleChildScrollView(child: buildInput(questions[index])),
+                itemBuilder: (_, i) => SingleChildScrollView(
+                  child: buildInput(questions[index]),
+                ),
               ),
             ),
-
             const SizedBox(height: 16),
-
-            // 3) Alt butonlar
             Row(
               children: [
                 if (index > 0)
@@ -265,8 +211,7 @@ class _CarViewState extends State<CarView> {
                   child: ElevatedButton(
                     onPressed: next,
                     child: Text(
-                      index == questions.length - 1 ? "Araba Bul" : "İleri",
-                    ),
+                        index == questions.length - 1 ? "Araba Bul" : "İleri"),
                   ),
                 ),
               ],
