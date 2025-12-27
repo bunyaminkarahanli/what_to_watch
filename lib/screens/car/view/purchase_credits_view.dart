@@ -14,7 +14,7 @@ class PurchaseCreditsView extends StatefulWidget {
 }
 
 class _PurchaseCreditsViewState extends State<PurchaseCreditsView> {
-  static const String _kProductId = 'credits_20';
+  static const String _kProductId = 'credits_10';
   static const String _packageName = 'com.hangi.app';
   static const String _backendBaseUrl =
       'https://what-to-watch-backend.onrender.com';
@@ -158,7 +158,7 @@ class _PurchaseCreditsViewState extends State<PurchaseCreditsView> {
         setState(() => _verifying = false);
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("20 araç önerisi hakkı eklendi!")),
+          const SnackBar(content: Text("10 araç önerisi hakkı eklendi!")),
         );
         Navigator.pop(context);
       } else {
@@ -242,13 +242,13 @@ class _PurchaseCreditsViewState extends State<PurchaseCreditsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "20 araç önerisi hakkı",
+              "10 araç önerisi hakkı",
               style: theme.textTheme.headlineSmall
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              "Kalan hakkınız bittiğinde bu paketi alarak 20 yeni araç önerisi hakkı kazanabilirsiniz.",
+              "Kalan hakkınız bittiğinde bu paketi alarak 10 yeni araç önerisi hakkı kazanabilirsiniz.",
               style: theme.textTheme.bodyMedium,
             ),
             const Spacer(),

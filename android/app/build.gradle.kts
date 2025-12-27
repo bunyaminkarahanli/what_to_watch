@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -9,6 +11,13 @@ plugins {
 }
 
 android {
+    // ✅ key.properties oku
+    val keystoreProperties = Properties()
+    val keystorePropertiesFile = rootProject.file("key.properties")
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(keystorePropertiesFile.inputStream())
+    }
+
     // ✅ Hangi için doğru namespace
     namespace = "com.hangi.app"
 
@@ -36,11 +45,27 @@ android {
         versionName = flutter.versionName
     }
 
+    // ✅ Release signing config (upload-keystore.jks)
+    signingConfigs {
+        create("release") {
+            keyAlias = (keystoreProperties["keyAlias"] as String)
+            keyPassword = (keystoreProperties["keyPassword"] as String)
+            storeFile = file("upload-keystore.jks") // android/app/upload-keystore.jks
+            storePassword = (keystoreProperties["storePassword"] as String)
+        }
+    }
+
     buildTypes {
         release {
-            // ⚠️ Şimdilik debug ile kalsın (app çalışsın diye)
-            // Play Store öncesi bunu değiştireceğiz
-            signingConfig = signingConfigs.getByName("debug")
+            // ✅ Play Store için doğru: release imzası
+            signingConfig = signingConfigs.getByName("release")
+
+            // (İstersen sonra açarız) küçültme/obfuscation şimdilik kapalı kalsın:
+            // isMinifyEnabled = false
+            // isShrinkResources = false
+        }
+        debug {
+            // debug default zaten debug ile imzalanır, dokunmaya gerek yok
         }
     }
 }

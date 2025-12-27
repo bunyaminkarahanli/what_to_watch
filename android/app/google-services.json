@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "44741937465-g6t7c5urh6ip4l78919dqji4mqb8075p.apps.googleusercontent.com",
+          "client_id": "44741937465-4tco5r6r6jfeb98nfhaphndmpvqu019v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hangi.app",
-            "certificate_hash": "aab2931f6e003d49121d5dad603e50b484d65f96"
+            "certificate_hash": "38ca7f483d7c6144c4357bb5d5ea64414dee0eea"
           }
         },
         {
