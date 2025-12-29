@@ -14,7 +14,7 @@ class PurchaseCreditsView extends StatefulWidget {
 }
 
 class _PurchaseCreditsViewState extends State<PurchaseCreditsView> {
-  static const String _kProductId = 'credits_10';
+  static const String _kProductId = 'credits-10';
   static const String _packageName = 'com.hangi.app';
   static const String _backendBaseUrl =
       'https://what-to-watch-backend.onrender.com';
